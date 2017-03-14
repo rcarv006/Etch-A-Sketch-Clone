@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Raul's Etch-A-Sketch clone</title>
+	</head>
+		<canvas id="canvas" width="1000" height="600"></canvas>
+		<style>
+		#canvas{
+			border: 5px red solid;
+			border-radius: 10px;
+		}
+		</style>
+		
+		<script>
+		var canvas,
+			canvasContext,
+			//initial X coordinate
+			brushX = 100,
+			//initial Y coordinate
+			brushY = 400,
+			brushSize = 7;
+			
+		const UP = 38;
+		const RIGHT = 39;
+		const DOWN = 40;
+		const LEFT = 37;
+		const CLEAR = 32;
+			
+			window.onload = function(){
+				canvas = document.getElementById("canvas");
+				canvasContext = canvas.getContext('2d');
+				
+				document.addEventListener('keydown',keyPressed);
+				drawCanvas();
+				var framesPerSecond = 30;
+				setInterval(function(){	update(); }, 1000/framesPerSecond);
+				
+				
+				
+			}
+			function keyPressed(evt){
+				/*console.log(evt.keyCode);*/
+				if(evt.keyCode == UP){
+					brushY -= 5;
+				}
+				if(evt.keyCode == RIGHT){
+					brushX += 5;
+				}
+				if(evt.keyCode == DOWN){
+					brushY += 5;
+				}
+				if(evt.keyCode == LEFT){
+					brushX -= 5;
+				}
+				if(evt.keyCode == CLEAR){
+					drawCanvas();
+				}
+				
+			}
+			
+			function update(){
+						
+						drawBrush();
+						/*Apparently, I don't have to call this function. Who knew?
+							If I call it here, then I get an error. This is not needed in the update fucntion.
+						*/
+						//keyPressed();
+			}
+			
+			
+			
+			
+			function drawBrush(){
+				
+				//draw a random square on the canvas
+				canvasContext.fillStyle = "black";
+				canvasContext.fillRect(brushX, brushY, brushSize, brushSize);
+			}
+			
+			function movement(){
+				//getting some movement on the black square
+				initX += speedX;
+				initY += speedY;
+			}
+			
+			function drawCanvas(){
+				//draw canvas
+				canvasContext.fillStyle = "grey";
+				canvasContext.fillRect(0,0, canvas.width, canvas.height);
+			}
+			
+			//collision detection of the edges of the screen
+			function bounce(){
+				//collision detection off the top and bottom
+				if(initY < 0 || initY > canvas.height - brushSize){
+					speedY *= -1;
+				}
+				//collision detection off the sides
+				if(initX < 0 || initX > canvas.width - brushSize){
+					speedX *= -1;
+				}
+			
+			}
+			
+		</script>
+	<body>
+	</body>
+</html>
